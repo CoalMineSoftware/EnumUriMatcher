@@ -31,7 +31,7 @@ public class EnumUriMatcher<EnumType extends Enum<?>> {
 
 	/** Adds a URI match for the given authority and path, which will return the given enumeration
 	 * value when matched. */
-	public void addMatch(String authority, String uriPath, EnumType matchEnum) {
+	public void addUri(String authority, String uriPath, EnumType matchEnum) {
 		matcher.addURI(authority, uriPath, matchEnum.ordinal());
 	}
 
@@ -40,12 +40,12 @@ public class EnumUriMatcher<EnumType extends Enum<?>> {
 	 * value when matched.
 	 * @throws IllegalStateException thrown if called with no default authority set.
 	 */
-	public void addMatch(String uriPath, EnumType matchEnum) {
+	public void addUri(String uriPath, EnumType matchEnum) {
 		if(defaultAuthority==null) {
 			throw new IllegalStateException("A default authority is needed before calling addMatch(String,EnumType).");
 		}
 
-		addMatch(defaultAuthority, uriPath, matchEnum);
+		addUri(defaultAuthority, uriPath, matchEnum);
 	}
 
 	public EnumType match(Uri uri) {
