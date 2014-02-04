@@ -1,12 +1,12 @@
-package com.coalminesoftware.urimatcher;
+package com.coalmine.urimatcher;
 
 import android.content.UriMatcher;
 import android.net.Uri;
 
 /** Wraps an Android UriMatcher so as to allow users to associate URI matches with enumeration
  * values, rather than arbitrary integer constants.  This reduces the amount of boilerplate code
- * needed to do URI matching, provides type safety, allows for useful compile-time warnings (i.e.,
- * missing cases in a switch(EnumType) statement) and eliminates the potential for errors while
+ * needed to do URI matching, provides type safety, allows for useful compile-time warnings (e.g.,
+ * missing cases in a switch statement) and eliminates the potential for errors while
  * manually defining "code" values. */
 public class EnumUriMatcher<EnumType extends Enum<?>> {
 	private UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -16,7 +16,7 @@ public class EnumUriMatcher<EnumType extends Enum<?>> {
 
 	/** Creates a matcher for the given enumeration type, without a default authority.  When adding
 	 * matches, use {@link #addMatch(String,String,Enum)} or call {@link #setDefaultAuthority(String)}
-	 * before calling {@link #addMatch(String,Enum)}. */
+	 * prior to calling {@link #addMatch(String,Enum)}. */
 	public EnumUriMatcher(Class<EnumType> clazz) {
 		enumValues = clazz.getEnumConstants();
 	}
@@ -52,12 +52,12 @@ public class EnumUriMatcher<EnumType extends Enum<?>> {
 		if(uri == null) {
 			return null;
 		}
-
+		
 		int matchValue = matcher.match(uri);
-
+		
 		return matchValue == UriMatcher.NO_MATCH?
 				null :
-				enumValues[matchValue];
+					enumValues[matchValue];
 	}
 
 	/** Sets the authority used when adding a URI match using {@link #addMatch(String, Enum)}. */
