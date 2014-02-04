@@ -1,4 +1,4 @@
-package com.coalminesoftware.urimatcher;
+package com.coalmine.urimatcher;
 
 import static org.junit.Assert.*;
 
