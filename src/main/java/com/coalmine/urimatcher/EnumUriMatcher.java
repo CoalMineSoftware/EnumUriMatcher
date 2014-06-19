@@ -57,7 +57,7 @@ public class EnumUriMatcher<EnumType extends Enum<?>> {
 		
 		return matchValue == UriMatcher.NO_MATCH?
 				null :
-					enumValues[matchValue];
+				enumValues[matchValue];
 	}
 
 	/** Sets the authority used when adding a URI match using {@link #addMatch(String, Enum)}. */
