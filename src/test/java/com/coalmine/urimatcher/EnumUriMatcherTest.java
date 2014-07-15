@@ -16,12 +16,12 @@ public class EnumUriMatcherTest {
 
 
 	@Test(expected=IllegalStateException.class)
-	public void testAddUriWithoutAuthority() {
+	public void testAddUriWithoutAuthorityOrDefaultAuthority() {
 		EnumUriMatcher<MatchType> matcher = new EnumUriMatcher<EnumUriMatcherTest.MatchType>(MatchType.class);
 
 		matcher.addUri("path", MatchType.FOO);
 
-		fail("Adding a URI without an authority should throw an exception unless a default has been specified.");
+		fail("Adding a URI without an authority (or default authority) should throw an exception unless a default has been specified.");
 	}
 
 	@Test
