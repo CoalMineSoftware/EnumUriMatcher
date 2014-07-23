@@ -41,10 +41,25 @@ public class EnumUriMatcherTest {
 				matcher.match(Uri.parse("content://"+AUTHORITY+"/bars")));
 	}
 
+	@Test
+	public void testMatch_noMatchShouldReturnNoMatchValue() {
+		Uri nonExistentUri = Uri.parse("content://"+AUTHORITY+"/non-existent");
+
+		EnumUriMatcher<MatchType> matcher = new EnumUriMatcher<MatchType>(MatchType.class, AUTHORITY);
+
+		assertNull(matcher.match(nonExistentUri));
+
+		matcher.setNoMatchValue(MatchType.NONE);
+		
+		assertEquals(MatchType.NONE,
+				matcher.match(nonExistentUri));
+	}
+
 
 	private enum MatchType {
 		FOOS, FOO,
-		BARS;
+		BARS,
+		NONE;
 	}
 }
 

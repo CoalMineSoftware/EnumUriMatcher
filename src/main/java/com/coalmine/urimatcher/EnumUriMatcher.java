@@ -12,6 +12,7 @@ public class EnumUriMatcher<MatchEnumeration extends Enum<?>> {
 	private UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 	private String defaultAuthority;
 	private MatchEnumeration[] enumerationValues;
+	private MatchEnumeration noMatchValue;
 
 
 	/** Creates a matcher for the given enumeration type, without a default authority.  When adding
@@ -21,12 +22,32 @@ public class EnumUriMatcher<MatchEnumeration extends Enum<?>> {
 		enumerationValues = enumerationClass.getEnumConstants();
 	}
 
+	/** Creates a matcher for the given enumeration type, providing a default value returned by
+	 * {@link #match(Uri)} when no match is found, and without a default authority.  When adding
+	 * matches, use {@link #addMatch(String,String,Enum)} or call
+	 * {@link #setDefaultAuthority(String)} prior to calling {@link #addMatch(String,Enum)}. */
+	public EnumUriMatcher(Class<MatchEnumeration> enumerationClass, MatchEnumeration noMatchValue) {
+		this(enumerationClass);
+
+		this.noMatchValue = noMatchValue;
+	}
+
 	/** Creates a matcher for the given enumeration type, also specifying the authority to use when
 	 * adding a match without specifying the authority. */
 	public EnumUriMatcher(Class<MatchEnumeration> enumerationClass, String defaultAuthority) {
 		this(enumerationClass);
 
 		this.defaultAuthority = defaultAuthority;
+	}
+
+	/** Creates a matcher for the given enumeration type, also specifying the authority to
+	 * use when adding a match without specifying the authority, and the value returned by
+	 * {@link #match(Uri)} when no match is found. */
+	public EnumUriMatcher(Class<MatchEnumeration> enumerationClass, String defaultAuthority, MatchEnumeration noMatchValue) {
+		this(enumerationClass);
+
+		this.defaultAuthority = defaultAuthority;
+		this.noMatchValue = noMatchValue;
 	}
 
 	/** Adds a URI match for the given authority and path, which will return the given enumeration
@@ -48,21 +69,27 @@ public class EnumUriMatcher<MatchEnumeration extends Enum<?>> {
 		addUri(defaultAuthority, uriPath, matchEnumeration);
 	}
 
+	/** @return The enumeration that was associated with the given URI's pattern, as determined by Android's {@link UriMatcher} class. */
 	public MatchEnumeration match(Uri uri) {
 		if(uri == null) {
 			return null;
 		}
-		
+
 		int matchValue = matcher.match(uri);
-		
+
 		return matchValue == UriMatcher.NO_MATCH?
-				null :
+				noMatchValue :
 				enumerationValues[matchValue];
 	}
 
 	/** Sets the authority used when adding a URI match using {@link #addMatch(String, Enum)}. */
 	public void setDefaultAuthority(String defaultAuthority) {
 		this.defaultAuthority = defaultAuthority;
+	}
+
+	/** Sets the value returned by {@link #match(Uri)} when no match is found for a URI. */
+	public void setNoMatchValue(MatchEnumeration noMatchValue) {
+		this.noMatchValue = noMatchValue;
 	}
 }
 
